@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: gateway-service-zuul
+server:
+  port: 8888
+
+zuul:
+  routes:
+     spring-cloud-consumer:
+        path: /consumer/**
+        serviceId: spring-cloud-consumer
+     myusers-services:
+        path: /myusers/**
+        serviceId: myusers-service
+        stripPrefix: true
+  host:
+    connect-timeout-millis: 3000
+    socket-timeout-millis: 3000
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 120000
+ribbon:
+  ConnectTimeout: 60000 # 连接超时时间(ms)
+  ReadTimeout: 60000 # 通信超时时间(ms)
+  OkToRetryOnAllOperations: true # 是否对所有操作重试
+  MaxAutoRetriesNextServer: 2 # 同一服务不同实例的重试次数
+  MaxAutoRetries: 1 # 同一实例的重试次数
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9000/eureka/
